@@ -1,0 +1,6 @@
+@MMZM.BloodDonationMS.API_HostAddress = http://localhost:5095
+
+GET {{MMZM.BloodDonationMS.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
