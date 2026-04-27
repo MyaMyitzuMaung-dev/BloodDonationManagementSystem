@@ -1,16 +1,17 @@
 ﻿// Controllers/AuthController.cs
 using Microsoft.AspNetCore.Mvc;
+using MMZM.BloodDonationMS.Domain.Features;
 using MMZM.BloodDonationMS.Domain.Features.Auth;
 
-namespace MMZM.BloodDonationMS.Api.Features.Auth;
+namespace MMZM.BloodDonationMS.Api.Features;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthFeature _feature;
+    private readonly AuthService _feature;
 
-    public AuthController(AuthFeature feature)
+    public AuthController(AuthService feature)
     {
         _feature = feature;
     }

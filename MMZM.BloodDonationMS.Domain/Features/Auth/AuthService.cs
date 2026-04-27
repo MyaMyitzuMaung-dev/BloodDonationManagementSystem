@@ -5,15 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MMZM.BloodDonationMS.Database.AppDbContextModels;
+using MMZM.BloodDonationMS.Domain.Features.Auth;
 
-namespace MMZM.BloodDonationMS.Domain.Features.Auth;
+namespace MMZM.BloodDonationMS.Domain.Features;
 
-public class AuthFeature
+public class AuthService
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _config;
 
-    public AuthFeature(AppDbContext context, IConfiguration config)
+    public AuthService(AppDbContext context, IConfiguration config)
     {
         _context = context;
         _config = config;

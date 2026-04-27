@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MMZM.BloodDonationMS.Domain.Features.Auth;
+using MMZM.BloodDonationMS.Domain.Features;
+using MMZM.BloodDonationMS.Domain.Features.BloodDonations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace MMZM.BloodDonationMS.Domain
     {
         public static void AddFeatures(this IServiceCollection services)
         {
-            services.AddScoped<AuthFeature>();
+            services.AddScoped<AuthService>();
+            services.AddScoped<BloodDonationService>();
         }
     }
 }
