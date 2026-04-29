@@ -31,7 +31,7 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, request.Email),
-                    new Claim("UserId", (response.UserId ?? 0).ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, (response.UserId ?? 0).ToString()),
                     new Claim(ClaimTypes.Role, response.Role ?? "User"),
                     new Claim("Token", response.Token ?? "")
                 };

@@ -29,7 +29,7 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
             
             if (request == null) return NotFound();
 
-            var commentsResponse = await _apiService.GetAsync<GetCommentsResponse>($"BloodRequest/comments/{id}");
+            var commentsResponse = await _apiService.GetAsync<GetCommentsResponse>($"BloodRequest/{id}/comments");
             ViewBag.Comments = commentsResponse?.Data ?? new List<CommentDto>();
 
             return View(request);
@@ -44,7 +44,7 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateBloodRequestRequest request)
         {
-            var response = await _apiService.PostAsync<CreateBloodRequestRequest, CreateBloodRequestResponse>("BloodRequest", request);
+            var response = await _apiService.PostAsync<CreateBloodRequestRequest, CreateBloodRequestResponse>("BloodRequest/create", request);
             if (response != null && response.IsSuccess)
             {
                 return RedirectToAction("Index");

@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        @if (User.Identity?.IsAuthenticated == true && Model.Status == "Open")
+        @if (User.Identity?.IsAuthenticated == true && Model.Status == "Pending")
         {
             <form asp-action="Accept" method="post" style="margin-bottom: 2rem;">
                 <input type="hidden" name="id" value="@Model.RequestId" />

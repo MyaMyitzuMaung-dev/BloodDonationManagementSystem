@@ -30,7 +30,7 @@
                 </p>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); padding-top: 1rem; margin-top: 1rem;">
-                    <span style="font-size: 0.8rem; font-weight: 600; color: @(request.Status == "Open" ? "#4caf50" : "#ff5252")">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: @(request.Status == "Pending" ? "#4caf50" : "#ff5252")">
                         ● @request.Status.ToUpper()
                     </span>
                     <a asp-action="Details" asp-route-id="@request.RequestId" class="nav-link" style="font-weight: 600; font-size: 0.9rem;">VIEW DETAILS →</a>

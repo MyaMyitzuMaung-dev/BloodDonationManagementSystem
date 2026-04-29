@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MMZM.BloodDonationMS.Domain.Features.BloodDonations;
 using MMZM.BloodDonationMS.MVCV1.Services;
+using System.Security.Claims;
 
 namespace MMZM.BloodDonationMS.MVCV1.Controllers
 {
@@ -17,7 +18,7 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirst("UserId")?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var response = await _apiService.GetAsync<GetDonationHistoryResponse>($"BloodDonation/history/{userId}");
             return View(response?.Data ?? new List<BloodDonationDto>());
         }
