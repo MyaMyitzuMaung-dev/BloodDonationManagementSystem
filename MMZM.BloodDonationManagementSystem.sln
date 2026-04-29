@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMZM.BloodDonationMS.Databa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMZM.BloodDonationMS.Domain", "MMZM.BloodDonationMS.Domain\MMZM.BloodDonationMS.Domain.csproj", "{671CF5A1-CB4F-4353-A989-C417A9877692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMZM.BloodDonationMS.MVC", "MMZM.BloodDonationMS.MVC\MMZM.BloodDonationMS.MVC.csproj", "{173F594D-B678-4201-88AE-1789AA809534}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{671CF5A1-CB4F-4353-A989-C417A9877692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{671CF5A1-CB4F-4353-A989-C417A9877692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{671CF5A1-CB4F-4353-A989-C417A9877692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{173F594D-B678-4201-88AE-1789AA809534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{173F594D-B678-4201-88AE-1789AA809534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{173F594D-B678-4201-88AE-1789AA809534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{173F594D-B678-4201-88AE-1789AA809534}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
