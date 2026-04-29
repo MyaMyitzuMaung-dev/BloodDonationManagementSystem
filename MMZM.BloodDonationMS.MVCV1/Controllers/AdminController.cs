@@ -22,6 +22,21 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
             return View(response);
         }
 
+        public async Task<IActionResult> PendingRequests()
+        {
+            var response = await _apiService.GetAsync<MMZM.BloodDonationMS.Domain.Features.BloodRequests.GetBloodRequestsResponse>("BloodRequest");
+            var pending = response?.Data?.Where(x => x.Status == "Pending").ToList() 
+                           ?? new List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>();
+            return View(pending);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveRequest(int id)
+        {
+            var response = await _apiService.PostAsync<object, object>($"BloodRequest/approve/{id}", new { });
+            return RedirectToAction("PendingRequests");
+        }
+
         public async Task<IActionResult> Users(int pageNumber = 1, int? roleId = null, string searchTerm = "")
         {
             var endpoint = $"User?pageNumber={pageNumber}&pageSize=10";

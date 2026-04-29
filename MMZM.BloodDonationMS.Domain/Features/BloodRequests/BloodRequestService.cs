@@ -12,6 +12,17 @@ public class BloodRequestFeature
         _context = context;
     }
 
+    // ✅ Approve Request
+    public async Task<bool> ApproveRequestAsync(int requestId)
+    {
+        var request = await _context.BloodRequests.FindAsync(requestId);
+        if (request == null || request.Status != "Pending") return false;
+
+        request.Status = "Approved";
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
     // 🧑‍⚕️ Create Request
     public async Task<CreateBloodRequestResponse> CreateAsync(CreateBloodRequestRequest request, int userId)
     {

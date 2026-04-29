@@ -28,7 +28,11 @@
                 {
                     <a class="nav-link" asp-controller="Donation" asp-action="Index">Donations</a>
                 }
-                <a class="nav-link" asp-controller="Request" asp-action="Index">Requests</a>
+                @if (User.IsInRole("Requester"))
+                {
+                    <a class="nav-link" asp-controller="Request" asp-action="MyRequests">My Requests</a>
+                }
+                <a class="nav-link" asp-controller="Request" asp-action="Index">All Requests</a>
                 @if (User.Identity?.IsAuthenticated == true)
                 {
                     <span class="nav-link" style="color: var(--accent-gold)">Hello, @User.Identity.Name</span>

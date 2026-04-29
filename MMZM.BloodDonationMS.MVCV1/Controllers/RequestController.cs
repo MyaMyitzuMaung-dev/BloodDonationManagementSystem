@@ -19,6 +19,13 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
         public async Task<IActionResult> Index()
         {
             var response = await _apiService.GetAsync<GetBloodRequestsResponse>("BloodRequest");
+            var requests = response?.Data?.Where(x => x.Status == "Approved").ToList() ?? new List<BloodRequestDto>();
+            return View(requests);
+        }
+
+        public async Task<IActionResult> MyRequests()
+        {
+            var response = await _apiService.GetAsync<GetBloodRequestsResponse>("BloodRequest/my-requests");
             return View(response?.Data ?? new List<BloodRequestDto>());
         }
 

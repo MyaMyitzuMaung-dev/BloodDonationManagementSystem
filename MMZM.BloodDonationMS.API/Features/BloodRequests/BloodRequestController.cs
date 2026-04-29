@@ -28,6 +28,16 @@ public class BloodRequestController : ControllerBase
         return Ok(response);
     }
 
+    // ✅ Approve (Admin Only)
+    [Authorize(Roles = "Admin")]
+    [HttpPost("approve/{id}")]
+    public async Task<IActionResult> Approve(int id)
+    {
+        var success = await _feature.ApproveRequestAsync(id);
+        if (!success) return BadRequest("Could not approve request");
+        return Ok(new { IsSuccess = true, Message = "Request Approved" });
+    }
+
     // 📋 Get All
     [Authorize]
     [HttpGet]

@@ -1,0 +1,49 @@
+@model List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>
+@{
+    ViewData["Title"] = "My Blood Requests";
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red);">My Blood Requests</h1>
+    <p style="color: var(--text-muted);">Track the status of your submitted requests.</p>
+</div>
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <h3>You haven't made any requests yet.</h3>
+            <div style="margin-top: 2rem;">
+                <a asp-action="Create" class="btn-primary" style="text-decoration: none;">Post New Request</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+            @foreach (var request in Model)
+            {
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <div style="background: var(--primary-red); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; font-size: 1.5rem;">
+                            @request.BloodGroup
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">STATUS</div>
+                            <div style="font-weight: 700; color: @(request.Status == "Approved" ? "#4caf50" : (request.Status == "Pending" ? "var(--accent-gold)" : "#ff5252"))">
+                                @request.Status.ToUpper()
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 0;">@request.PatientName</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">@request.HospitalName</p>
+                    
+                    <div style="margin-top: 2rem;">
+                        <a asp-action="Details" asp-route-id="@request.RequestId" class="nav-link" style="display: block; text-align: center;">View Full Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

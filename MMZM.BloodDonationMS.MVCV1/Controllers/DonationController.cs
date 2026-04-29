@@ -37,7 +37,7 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
             
             // 3. Get All Requests and Filter
             var requestsResponse = await _apiService.GetAsync<MMZM.BloodDonationMS.Domain.Features.BloodRequests.GetBloodRequestsResponse>("BloodRequest");
-            var matching = requestsResponse?.Data?.Where(r => r.Status == "Pending" && compatibleGroups.Contains(r.BloodGroup)).ToList() 
+            var matching = requestsResponse?.Data?.Where(r => r.Status == "Approved" && compatibleGroups.Contains(r.BloodGroup)).ToList() 
                            ?? new List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>();
 
             ViewBag.DonorGroup = donor.BloodGroup;

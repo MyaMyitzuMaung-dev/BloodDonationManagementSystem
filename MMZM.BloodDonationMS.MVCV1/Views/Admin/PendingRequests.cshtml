@@ -1,0 +1,45 @@
+@model List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>
+@{
+    ViewData["Title"] = "Pending Approvals";
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red);">Pending Approvals</h1>
+    <p style="color: var(--text-muted);">Review and validate new blood requests.</p>
+</div>
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <h3>All caught up!</h3>
+            <p>There are no pending requests waiting for approval.</p>
+        </div>
+    }
+    else
+    {
+        <div style="display: grid; gap: 1.5rem;">
+            @foreach (var request in Model)
+            {
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">REQUEST #@request.RequestId</div>
+                        <h3 style="margin: 0; color: white;">@request.PatientName</h3>
+                        <div style="margin-top: 0.5rem;">
+                            <span style="background: var(--primary-red); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">@request.BloodGroup</span>
+                            <span style="margin-left: 1rem; color: var(--text-muted);">@request.HospitalName</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <a asp-controller="Request" asp-action="Details" asp-route-id="@request.RequestId" class="nav-link" style="color: var(--accent-gold);">Review Details</a>
+                        <form asp-action="ApproveRequest" method="post">
+                            <input type="hidden" name="id" value="@request.RequestId" />
+                            <button type="submit" class="btn-primary" style="padding: 0.5rem 1.5rem; background-color: #4caf50;">APPROVE</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
