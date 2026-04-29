@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MMZM.BloodDonationMS.Database.AppDbContextModels;
 
 namespace MMZM.BloodDonationMS.Domain.Features.BloodRequests;
@@ -105,6 +105,96 @@ public class BloodRequestFeature
         {
             IsSuccess = true,
             Message = "Request accepted"
+        };
+    }
+
+    // ✍️ Add Comment
+    public async Task<AddCommentResponse> AddCommentAsync(AddCommentRequest request, int userId)
+    {
+        var entity = new RequestComment
+        {
+            RequestId = request.RequestId,
+            UserId = userId,
+            CommentText = request.CommentText,
+            CreatedAt = DateTime.Now,
+            IsDeleted = false
+        };
+
+        _context.RequestComments.Add(entity);
+        await _context.SaveChangesAsync();
+
+        return new AddCommentResponse
+        {
+            IsSuccess = true,
+            Message = "Comment added"
+        };
+    }
+
+    // 💬 Get Comments
+    public async Task<GetCommentsResponse> GetCommentsAsync(int requestId)
+    {
+        var list = await _context.RequestComments
+            .Where(x => x.RequestId == requestId && x.IsDeleted == false)
+            .OrderBy(x => x.CreatedAt)
+            .Select(x => new CommentDto
+            {
+                CommentId = x.CommentId,
+                UserName = x.User.Name ?? "System",
+                CommentText = x.CommentText ?? "",
+                CreatedAt = x.CreatedAt
+            })
+            .ToListAsync();
+
+        return new GetCommentsResponse
+        {
+            IsSuccess = true,
+            Message = "Success",
+            Data = list
+        };
+    }
+
+    // 🗑️ Delete Comment (Soft Delete)
+    public async Task<DeleteCommentResponse> DeleteCommentAsync(int commentId, int userId)
+    {
+        var comment = await _context.RequestComments.FindAsync(commentId);
+
+        if (comment == null || comment.IsDeleted)
+            return new DeleteCommentResponse { IsSuccess = false, Message = "Comment not found" };
+
+        if (comment.UserId != userId)
+            return new DeleteCommentResponse { IsSuccess = false, Message = "Unauthorized" };
+
+        comment.IsDeleted = true;
+        await _context.SaveChangesAsync();
+
+        return new DeleteCommentResponse
+        {
+            IsSuccess = true,
+            Message = "Comment deleted"
+        };
+    }
+
+    // 📋 Get My Requests
+    public async Task<GetBloodRequestsResponse> GetMyRequestsAsync(int userId)
+    {
+        var list = await _context.BloodRequests
+            .Where(x => x.RequesterId == userId && x.IsDeleted == false)
+            .Select(x => new BloodRequestDto
+            {
+                RequestId = x.RequestId,
+                PatientName = x.PatientName,
+                BloodGroup = x.BloodGroup,
+                HospitalName = x.HospitalName,
+                Status = x.Status
+            })
+            .OrderByDescending(x => x.RequestId)
+            .ToListAsync();
+
+        return new GetBloodRequestsResponse
+        {
+            IsSuccess = true,
+            Message = "Success",
+            Data = list
         };
     }
 }

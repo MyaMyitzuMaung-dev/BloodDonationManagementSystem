@@ -17,7 +17,7 @@ namespace MMZM.BloodDonationMS.Domain
         {
             services.AddScoped<AuthService>();
             services.AddScoped<BloodRequestFeature>();
-            services.AddScoped<BloodDonationService>();
+            services.AddScoped<BloodDonationFeature>();
             services.AddScoped<UserService>();
         }
     }
