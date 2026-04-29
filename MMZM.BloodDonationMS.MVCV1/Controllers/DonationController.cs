@@ -23,6 +23,29 @@ namespace MMZM.BloodDonationMS.MVCV1.Controllers
             return View(response?.Data ?? new List<BloodDonationDto>());
         }
 
+        public async Task<IActionResult> Matching()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            // 1. Get Donor Info
+            var donor = await _apiService.GetAsync<MMZM.BloodDonationMS.Domain.Features.UserManagement.GetUserByIdResponse>($"User/{userId}");
+            if (donor == null || donor.BloodGroup == null) return View(new List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>());
+
+            // 2. Check Compatibility
+            var compatibleGroups = MMZM.BloodDonationMS.Domain.Helpers.BloodCompatibility.GetCompatibleRecipients(donor.BloodGroup);
+            
+            // 3. Get All Requests and Filter
+            var requestsResponse = await _apiService.GetAsync<MMZM.BloodDonationMS.Domain.Features.BloodRequests.GetBloodRequestsResponse>("BloodRequest");
+            var matching = requestsResponse?.Data?.Where(r => r.Status == "Pending" && compatibleGroups.Contains(r.BloodGroup)).ToList() 
+                           ?? new List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>();
+
+            ViewBag.DonorGroup = donor.BloodGroup;
+            ViewBag.IsAvailable = donor.IsAvailable;
+            
+            return View(matching);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Complete(int id)
         {

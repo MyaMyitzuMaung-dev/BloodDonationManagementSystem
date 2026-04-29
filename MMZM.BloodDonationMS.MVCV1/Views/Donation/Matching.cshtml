@@ -1,0 +1,52 @@
+@model List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>
+@{
+    ViewData["Title"] = "Life-Saving Matches";
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red); margin-bottom: 1rem;">Life-Saving Matches</h1>
+    <p style="color: var(--text-muted);">Showing requests compatible with your blood group: <span style="color: var(--accent-gold); font-weight: 700;">@ViewBag.DonorGroup</span></p>
+</div>
+
+<div class="container">
+    @if (ViewBag.IsAvailable == false)
+    {
+        <div class="card" style="border: 1px solid var(--primary-red); background: rgba(211, 47, 47, 0.05); margin-bottom: 2rem; text-align: center;">
+            <p style="color: var(--primary-red); font-weight: 600; margin: 0;">You are currently marked as UNAVAILABLE. Requesters cannot see your profile, but you can still accept requests manually.</p>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <h3>No matching requests found right now.</h3>
+            <p>Thank you for your willingness to help! We'll notify you when someone needs your blood group.</p>
+        </div>
+    }
+    else
+    {
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+            @foreach (var request in Model)
+            {
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <div style="background: var(--primary-red); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 800; font-size: 1.5rem; line-height: 1;">
+                            @request.BloodGroup
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">#@request.RequestId</div>
+                            <div style="color: #4caf50; font-weight: 600; font-size: 0.8rem;">READY FOR DONATION</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 0;">@request.PatientName</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">@request.HospitalName</p>
+                    
+                    <div style="margin-top: 2rem;">
+                        <a asp-controller="Request" asp-action="Details" asp-route-id="@request.RequestId" class="btn-primary" style="display: block; text-decoration: none; text-align: center;">View Details & Help</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

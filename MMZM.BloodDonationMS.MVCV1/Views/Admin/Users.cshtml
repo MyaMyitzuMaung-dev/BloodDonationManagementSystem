@@ -1,0 +1,79 @@
+@model MMZM.BloodDonationMS.Domain.Features.UserManagement.GetUsersResponse
+@{
+    ViewData["Title"] = "User Management";
+    int currentRoleId = ViewBag.RoleId ?? 0;
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red);">User Management</h1>
+</div>
+
+<div class="container">
+    <div class="card" style="margin-bottom: 2rem;">
+        <form asp-action="Users" method="get" style="display: flex; gap: 1rem; align-items: flex-end;">
+            <div class="form-group" style="flex: 1; margin: 0;">
+                <label>Search Name/Email</label>
+                <input name="searchTerm" class="form-control" value="@ViewBag.SearchTerm" placeholder="John Doe..." />
+            </div>
+            <div class="form-group" style="width: 200px; margin: 0;">
+                <label>Filter Role</label>
+                <select name="roleId" class="form-control">
+                    <option value="">All Roles</option>
+                    <option value="2" selected="@(currentRoleId == 2)">Donor</option>
+                    <option value="3" selected="@(currentRoleId == 3)">Requester</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Filter</button>
+        </form>
+    </div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; color: var(--text-light);">
+            <thead style="background: rgba(255,255,255,0.05);">
+                <tr>
+                    <th style="padding: 1.5rem; text-align: left;">User</th>
+                    <th style="padding: 1.5rem; text-align: left;">Role</th>
+                    <th style="padding: 1.5rem; text-align: left;">Blood Group</th>
+                    <th style="padding: 1.5rem; text-align: left;">Status</th>
+                    <th style="padding: 1.5rem; text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr style="border-bottom: 1px solid var(--glass-border);">
+                        <td style="padding: 1.5rem;">
+                            <div style="font-weight: 700;">@user.Name</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">@user.Email</div>
+                        </td>
+                        <td style="padding: 1.5rem;">@user.RoleName</td>
+                        <td style="padding: 1.5rem;">
+                            <span style="background: var(--primary-red); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700;">
+                                @(user.BloodGroup ?? "N/A")
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem;">
+                            <span style="color: @(user.IsAvailable ? "#4caf50" : "#ff5252"); font-weight: 600;">
+                                @(user.IsAvailable ? "Active" : "Deactivated")
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: right;">
+                            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                <form asp-action="ToggleUserStatus" method="post">
+                                    <input type="hidden" name="id" value="@user.UserId" />
+                                    <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; color: var(--accent-gold);">
+                                        @(user.IsAvailable ? "Deactivate" : "Activate")
+                                    </button>
+                                </form>
+                                <form asp-action="DeleteUser" method="post" onsubmit="return confirm('Delete this user?')">
+                                    <input type="hidden" name="id" value="@user.UserId" />
+                                    <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; color: var(--primary-red);">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

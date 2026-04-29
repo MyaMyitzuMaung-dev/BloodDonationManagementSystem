@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MMZM.BloodDonationMS.Domain.Features;
 using MMZM.BloodDonationMS.Domain.Features.BloodDonations;
 using MMZM.BloodDonationMS.Domain.Features.BloodRequests;
+using MMZM.BloodDonationMS.Domain.Features.Reports;
 using MMZM.BloodDonationMS.Domain.Features.UserManagement;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace MMZM.BloodDonationMS.Domain
             services.AddScoped<BloodRequestFeature>();
             services.AddScoped<BloodDonationFeature>();
             services.AddScoped<UserService>();
+            services.AddScoped<ReportService>();
         }
     }
 }
