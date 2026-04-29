@@ -1,0 +1,62 @@
+@model MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto
+@{
+    ViewData["Title"] = "Request Details";
+    var comments = ViewBag.Comments as List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.CommentDto> ?? new List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.CommentDto>();
+}
+
+<div class="container" style="max-width: 800px;">
+    <div class="card" style="margin-top: 2rem; padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h1 style="margin: 0; color: white;">@Model.PatientName</h1>
+                <p style="color: var(--text-muted); margin: 0.5rem 0 0 0;">Hospital: @Model.HospitalName</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="background: var(--primary-red); color: white; padding: 1rem; border-radius: 12px; font-weight: 800; font-size: 2rem; line-height: 1;">
+                    @Model.BloodGroup
+                </div>
+                <div style="margin-top: 0.5rem; font-weight: 600; color: #4caf50;">@Model.Status</div>
+            </div>
+        </div>
+
+        @if (User.Identity?.IsAuthenticated == true && Model.Status == "Open")
+        {
+            <form asp-action="Accept" method="post" style="margin-bottom: 2rem;">
+                <input type="hidden" name="id" value="@Model.RequestId" />
+                <button type="submit" class="btn-primary" style="width: 100%; font-size: 1.2rem; padding: 1rem;">I WANT TO DONATE</button>
+            </form>
+        }
+    </div>
+
+    <!-- Comments Section -->
+    <div style="margin-top: 3rem;">
+        <h3 style="margin-bottom: 1.5rem; color: var(--text-light);">Comments & Updates</h3>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div class="card" style="margin-bottom: 2rem;">
+                <form asp-action="AddComment" method="post">
+                    <input type="hidden" name="RequestId" value="@Model.RequestId" />
+                    <div class="form-group">
+                        <textarea name="CommentText" class="form-control" rows="3" placeholder="Add a comment or ask a question..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="float: right;">Post Comment</button>
+                    <div style="clear: both;"></div>
+                </form>
+            </div>
+        }
+
+        <div style="display: grid; gap: 1rem;">
+            @foreach (var comment in comments.OrderByDescending(c => c.CreatedAt))
+            {
+                <div class="card" style="background: rgba(255, 255, 255, 0.02);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="font-weight: 700; color: var(--accent-gold);">@comment.UserName</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">@comment.CreatedAt?.ToString("MMM dd, yyyy HH:mm")</span>
+                    </div>
+                    <p style="margin: 0; line-height: 1.5;">@comment.CommentText</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

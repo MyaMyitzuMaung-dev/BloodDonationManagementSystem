@@ -1,0 +1,62 @@
+@model MMZM.BloodDonationMS.Domain.Features.BloodRequests.CreateBloodRequestRequest
+@{
+    ViewData["Title"] = "Create Request";
+}
+
+<div class="auth-container" style="max-width: 600px;">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">Blood Request Form</h2>
+    
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" style="color: #ff5252; margin-bottom: 1rem;"></div>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label asp-for="PatientName">Patient Name</label>
+                <input asp-for="PatientName" class="form-control" placeholder="Full name of patient" required />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="BloodGroup">Blood Group</label>
+                <select asp-for="BloodGroup" class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HospitalName">Hospital Name</label>
+            <input asp-for="HospitalName" class="form-control" placeholder="e.g. General Hospital" required />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Location">Exact Location / Ward</label>
+            <input asp-for="Location" class="form-control" placeholder="e.g. Ward 5, Bed 12" required />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label asp-for="UnitsNeeded">Units Needed (Pints)</label>
+                <input asp-for="UnitsNeeded" type="number" class="form-control" min="1" value="1" required />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Urgency">Urgency Level</label>
+                <select asp-for="Urgency" class="form-control" required>
+                    <option value="Normal">Normal</option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; font-size: 1.1rem; padding: 1rem;">Post Request</button>
+    </form>
+</div>

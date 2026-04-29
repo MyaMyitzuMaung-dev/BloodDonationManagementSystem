@@ -1,0 +1,60 @@
+@model List<MMZM.BloodDonationMS.Domain.Features.BloodDonations.BloodDonationDto>
+@{
+    ViewData["Title"] = "My Donations";
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red); margin-bottom: 1rem;">Donation History</h1>
+    <p style="color: var(--text-muted);">Track your life-saving contributions.</p>
+</div>
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <h3>No donations yet.</h3>
+            <p>Ready to save a life? Check out the <a asp-controller="Request" asp-action="Index" style="color: var(--primary-red);">active requests</a>.</p>
+        </div>
+    }
+    else
+    {
+        <div style="display: grid; gap: 1.5rem;">
+            @foreach (var donation in Model)
+            {
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">DONATION #@donation.DonationId</div>
+                        <h3 style="margin: 0; color: white;">@donation.PatientName</h3>
+                        <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                            <span style="color: var(--text-muted);">Date:</span> @(donation.DonationDate?.ToShortDateString() ?? "Pending")
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <div style="margin-bottom: 1rem;">
+                            <span style="padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; 
+                                background: @(donation.Status == "Completed" ? "rgba(76, 175, 80, 0.1)" : "rgba(255, 193, 7, 0.1)");
+                                color: @(donation.Status == "Completed" ? "#4caf50" : "#ffc107");">
+                                @donation.Status
+                            </span>
+                        </div>
+                        
+                        @if (donation.Status == "Pending")
+                        {
+                            <div style="display: flex; gap: 0.5rem;">
+                                <form asp-action="Complete" method="post">
+                                    <input type="hidden" name="id" value="@donation.DonationId" />
+                                    <button type="submit" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem; background-color: #4caf50;">Complete</button>
+                                </form>
+                                <form asp-action="Cancel" method="post">
+                                    <input type="hidden" name="id" value="@donation.DonationId" />
+                                    <button type="submit" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem; background-color: #2d2d2d;">Cancel</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

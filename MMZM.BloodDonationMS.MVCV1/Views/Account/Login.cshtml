@@ -1,0 +1,28 @@
+@model MMZM.BloodDonationMS.Domain.Features.Auth.LoginRequest
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-container">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-red);">Login</h2>
+    
+    <form asp-action="Login" method="post">
+        <div asp-validation-summary="ModelOnly" style="color: #ff5252; margin-bottom: 1rem;"></div>
+        
+        <div class="form-group">
+            <label asp-for="Email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email Address</label>
+            <input asp-for="Email" class="form-control" placeholder="enter@email.com" required />
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Password" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Password</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Sign In</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+        Don't have an account? <a asp-action="Register" style="color: var(--primary-red); text-decoration: none;">Register here</a>
+    </p>
+</div>

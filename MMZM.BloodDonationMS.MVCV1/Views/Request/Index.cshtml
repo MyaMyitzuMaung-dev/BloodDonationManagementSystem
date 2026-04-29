@@ -1,0 +1,41 @@
+@model List<MMZM.BloodDonationMS.Domain.Features.BloodRequests.BloodRequestDto>
+@{
+    ViewData["Title"] = "Blood Requests";
+}
+
+<div class="hero">
+    <h1 style="color: var(--primary-red); margin-bottom: 1rem;">Blood Requests</h1>
+    <p style="color: var(--text-muted);">Help someone in need today. Every drop counts.</p>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-action="Create" class="btn-primary" style="display: inline-block; margin-top: 1rem; text-decoration: none;">Request Blood</a>
+    }
+</div>
+
+<div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        @foreach (var request in Model)
+        {
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <div style="background: var(--primary-red); color: white; padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 700; font-size: 1.1rem;">
+                        @request.BloodGroup
+                    </div>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">#@request.RequestId</span>
+                </div>
+                
+                <h3 style="margin: 0 0 0.5rem 0;">@request.PatientName</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                    <i class="hospital-icon"></i> @request.HospitalName
+                </p>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); padding-top: 1rem; margin-top: 1rem;">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: @(request.Status == "Open" ? "#4caf50" : "#ff5252")">
+                        ● @request.Status.ToUpper()
+                    </span>
+                    <a asp-action="Details" asp-route-id="@request.RequestId" class="nav-link" style="font-weight: 600; font-size: 0.9rem;">VIEW DETAILS →</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

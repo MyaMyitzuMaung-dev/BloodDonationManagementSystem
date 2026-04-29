@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MMZM.BloodDonationMS.Domain\MMZM.BloodDonationMS.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
